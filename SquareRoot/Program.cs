@@ -23,8 +23,18 @@ namespace SquareRoot
         */
         static void Main(string[] args)
         {
+            // Create an instance of the HeronRoot class
+            HeronRoot root = new HeronRoot(0.01);
 
-            
+            // Get input from user
+            Console.WriteLine("Enter a positive integer for which you'd like a square root: ");
+            int number =  Int32.Parse(Console.ReadLine());
+            Console.WriteLine("Enter a positive integer which you think might be the square root: ");
+            int factor = Int32.Parse(Console.ReadLine());
+            double result = root.GetHeronRoot(25, 5);
+
+            Console.WriteLine($"Square root is: {result}");
+            Console.ReadLine();
         }
 
         // A class that computers the square root of numbers
@@ -40,8 +50,15 @@ namespace SquareRoot
             }
 
             // A method which computers the square root for an arbitrary number
-            public int GetHeronRoot(int number, int factor)
+            public double GetHeronRoot(int number, int factor)
             {
+                if (number < 1 || factor < 1)
+                    throw new Exception("Please enter positive numbers"); // TODO
+                if ((number / factor) - (Math.Sqrt(number)) < _error)
+                {
+                    return factor;
+                }
+
                 return 0;
             }
         }
