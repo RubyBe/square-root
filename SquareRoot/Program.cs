@@ -28,10 +28,10 @@ namespace SquareRoot
 
             // Get input from user
             Console.WriteLine("Enter a positive integer for which you'd like a square root: ");
-            int number =  Int32.Parse(Console.ReadLine());
+            double number =  Double.Parse(Console.ReadLine());
             Console.WriteLine("Enter a positive integer which you think might be the square root: ");
-            int factor = Int32.Parse(Console.ReadLine());
-            double result = root.GetHeronRoot(25, 5);
+            double factor = Double.Parse(Console.ReadLine());
+            double result = root.GetHeronRoot(number, factor);
 
             Console.WriteLine($"Square root is: {result}");
             Console.ReadLine();
@@ -50,16 +50,32 @@ namespace SquareRoot
             }
 
             // A method which computers the square root for an arbitrary number
-            public double GetHeronRoot(int number, int factor)
+            public double GetHeronRoot(double number, double factor)
             {
+                double quotient;
+                double newGuess;
+                double result = 0;
+                double initialDiff = 0;
+                // If not positive integers, ask user to re-enter numbers
                 if (number < 1 || factor < 1)
                     throw new Exception("Please enter positive numbers"); // TODO
-                if ((number / factor) - (Math.Sqrt(number)) < _error)
+
+                // If the user guess is within the margin of error, return the user guess as correct
+                initialDiff = Math.Abs((number / factor) - (Math.Sqrt(number)));
+                if (initialDiff < _error)
                 {
                     return factor;
                 }
-
-                return 0;
+                // If the user guess is not within the margin of error, calculate the square root using the Heron method
+                while (initialDiff >= _error) 
+                {
+                    quotient = number / factor;
+                    newGuess = (factor + quotient) / 2;
+                    result = number / newGuess;
+                    factor = result;
+                    initialDiff = Math.Abs(result - (Math.Sqrt(number)));
+                }
+                return result;
             }
         }
     }
