@@ -23,6 +23,7 @@ namespace SquareRoot
         */
         static void Main(string[] args)
         {
+            double validateTest = ValidateHeron();
             // Create an instance of the Heron Calculator class
             HeronCalculator rootCalculator = new HeronCalculator(0.01);
             // Create an instance of the Standard Calculator class
@@ -44,12 +45,41 @@ namespace SquareRoot
             Console.WriteLine($"Square root by Math.Sqrt is: {MathResult}");
             Console.ReadLine();
         }
-        private double ValidateHeron()
+        private static double ValidateHeron()
         {
             // A function to validate the accuracy of the Heron calculation vs. the internal Math.Sqrt function
-            HeronCalculator rootCalculator = new HeronCalculator(0.0001);
-
-            return 0;
+            double error = 0.0001;
+            double resultHeron;
+            double resultStandard;
+            int resultTrue = 0;
+            List<bool> resultList = new List<bool>();
+            HeronCalculator heronCalculator = new HeronCalculator(error);
+            StandardCalculator standardCalculator = new StandardCalculator(error);
+            // Create random sample data to use for testing square root methods
+            Random r = new Random();
+            List<int> listNumbers = new List<int>();
+            for(int i = 1; i < 10001; i++)
+            {
+                listNumbers.Add(r.Next(0, 100000));
+            }
+            // Run both square root methods on each of the random sample data numbers
+            foreach(var num in listNumbers)
+            {
+                resultHeron = heronCalculator.GetHeronRoot(num, 1);
+                resultStandard = standardCalculator.GetStandardRoot(num, 1);
+                if (Math.Abs(resultHeron - resultStandard) < error)
+                {
+                    resultList.Add(true);
+                    resultTrue++;
+                }
+                else
+                {
+                    resultList.Add(false);
+                    throw new Exception("The difference between the two methods is not within the accepted error rate.");
+                }                 
+            }
+            
+            return resultTrue;
         }
     }
 }
