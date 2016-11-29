@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace SquareRoot
 {
-    interface ISqrRt
+    public interface ISqrRt
     {
         double GetSquareRoot(double number);
     }
