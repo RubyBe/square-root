@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace SquareRoot
 {
-    class HeronCalculator
+    class HeronCalculator : ISqrRt
     {
         // A property which is the acceptable error limit
         private double _error { get; set; }
@@ -18,8 +18,9 @@ namespace SquareRoot
         }
 
         // A method which computers the square root for an arbitrary number
-        public double GetHeronRoot(double number, double factor)
+        public double GetSquareRoot(double number)
         {
+            double factor = number / 2;
             double quotient;
             double newGuess;
             double result = 0;

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace SquareRoot
 {
-    class StandardCalculator
+    class StandardCalculator : ISqrRt
     {
         private double _error { get; set; }
 
@@ -17,8 +17,9 @@ namespace SquareRoot
         }
 
         // A method that returns the the square root of a number calculated using internal Math function
-        public double GetStandardRoot(double number, double factor)
+        public double GetSquareRoot(double number)
         {
+            double factor = number / 2;
             // If not positive integers, ask user to re-enter numbers
             if (number < 1 || factor < 1)
                 throw new Exception("Please enter positive numbers");
