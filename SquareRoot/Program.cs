@@ -8,7 +8,7 @@ namespace SquareRoot
 {
     class Program
     {
-        /* A program that uses the Heron algorithm for computing the square root of a number N
+        /* A program that uses either that building MathSqrt or the Heron algorithm for computing the square root of a number N
         Guess number G = N/2
         If G*G is close enough to N
             return G
@@ -23,60 +23,33 @@ namespace SquareRoot
         */
         static void Main(string[] args)
         {
-            // Create an instance of the HeronRoot class
-            HeronRoot root = new HeronRoot(0.01);
+            // Create an instance of the Heron Calculator class
+            HeronCalculator rootCalculator = new HeronCalculator(0.01);
+            // Create an instance of the Standard Calculator class
+            StandardCalculator standardCalculator = new StandardCalculator(0.01);
 
             // Get input from user
             Console.WriteLine("Enter a positive integer for which you'd like a square root: ");
             double number =  Double.Parse(Console.ReadLine());
             Console.WriteLine("Enter a positive integer which you think might be the square root: ");
             double factor = Double.Parse(Console.ReadLine());
-            double result = root.GetHeronRoot(number, factor);
 
-            Console.WriteLine($"Square root is: {result}");
+            // Call the Heron calculator
+            double HeronResult = rootCalculator.GetHeronRoot(number, factor);
+            // Call the standard calculator
+            double MathResult = standardCalculator.GetStandardRoot(number, factor);
+
+            // Write the results
+            Console.WriteLine($"Square root by Heron is: {HeronResult}");
+            Console.WriteLine($"Square root by Math.Sqrt is: {MathResult}");
             Console.ReadLine();
         }
-
-        // A class that computers the square root of numbers
-        public class HeronRoot
+        private double ValidateHeron()
         {
-            // A property which is the acceptable error limit
-            private double _error { get; set; }
+            // A function to validate the accuracy of the Heron calculation vs. the internal Math.Sqrt function
+            HeronCalculator rootCalculator = new HeronCalculator(0.0001);
 
-            // A constructor which takes a double as the error limit
-            public HeronRoot(double error)
-            {
-                _error = error;
-            }
-
-            // A method which computers the square root for an arbitrary number
-            public double GetHeronRoot(double number, double factor)
-            {
-                double quotient;
-                double newGuess;
-                double result = 0;
-                double initialDiff = 0;
-                // If not positive integers, ask user to re-enter numbers
-                if (number < 1 || factor < 1)
-                    throw new Exception("Please enter positive numbers"); // TODO
-
-                // If the user guess is within the margin of error, return the user guess as correct
-                initialDiff = Math.Abs((number / factor) - (Math.Sqrt(number)));
-                if (initialDiff < _error)
-                {
-                    return factor;
-                }
-                // If the user guess is not within the margin of error, calculate the square root using the Heron method
-                while (initialDiff >= _error) 
-                {
-                    quotient = number / factor;
-                    newGuess = (factor + quotient) / 2;
-                    result = number / newGuess;
-                    factor = result;
-                    initialDiff = Math.Abs(result - (Math.Sqrt(number)));
-                }
-                return result;
-            }
+            return 0;
         }
     }
 }
